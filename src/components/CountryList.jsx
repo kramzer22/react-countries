@@ -7,23 +7,30 @@ function CountryList({
   serachResultRef,
 }) {
   const continentList = countryList.reduce((itemList, country) => {
-    if (!itemList[country.region]) {
-      itemList[country.region] = [];
+    const continent = country.region.toLowerCase();
+    const subRegionName = !country.subregion ? "others" : country.subregion;
+    let subRegion;
+    if (!country.subregion) {
+      subRegion = "others";
+    } else {
+      subRegion = country.subregion.toLowerCase().replaceAll(" ", "_");
     }
 
-    if (!itemList[country.region].includes(country.subregion)) {
-      itemList[country.region].push(country.subregion);
+    if (!itemList[continent]) {
+      itemList[continent] = { region: country.region };
     }
+
+    if (!itemList[continent][subRegion]) {
+      itemList[continent][subRegion] = {
+        countries: [],
+        subregion: subRegionName,
+      };
+    }
+
+    itemList[continent][subRegion].countries.push(country);
+
     return itemList;
   }, {});
-
-  console.log(continentList);
-
-  const filteredCountries = (filter) => {
-    return countryList.filter((country) =>
-      country.name.common.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
 
   const coutrySelectedhandle = (country) => {
     const results = filteredCountries(country);
@@ -38,18 +45,18 @@ function CountryList({
   };
 
   return (
-    <div className="continent-container">
+    <div className="continent-main-container">
       {Object.keys(continentList).map((continent) => {
         return (
-          <div key={continent}>
-            <h2>{continent}</h2>
-            {continentList[continent].map((subContinent) => {
-              return (
+          <div key={continent} className="continent-container">
+            <h2>{continentList[continent].region}</h2>
+            {Object.keys(continentList[continent]).map((subContinent) => {
+              return subContinent !== "region" ? (
                 <div key={subContinent} className="subcontinent-container">
-                  <p>{subContinent}</p>
+                  <h3>{continentList[continent][subContinent].subregion}</h3>
                   <div className="country-list-container">
-                    {countryList.map((country, index) => {
-                      if (country.subregion === subContinent) {
+                    {continentList[continent][subContinent].countries.map(
+                      (country, index) => {
                         return (
                           <div
                             key={index}
@@ -67,26 +74,14 @@ function CountryList({
                           </div>
                         );
                       }
-                    })}
+                    )}
                   </div>
                 </div>
-              );
+              ) : null;
             })}
           </div>
         );
       })}
-      {/* {countryList.map((country, index) => {
-        return (
-          <div
-            key={index}
-            className="country-item-container"
-            onClick={() => coutrySelectedhandle(country.name.common)}
-          >
-            <p>{country.name.common}</p>
-            <img className="flag-list-img" src={country.flags.svg} alt="" />
-          </div>
-        );
-      })} */}
     </div>
   );
 }
