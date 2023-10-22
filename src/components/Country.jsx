@@ -35,10 +35,9 @@ function Country({ countryName }) {
     ? country.capital
     : [country.name.common];
 
-  const languagesCount = Object.keys(country.languages).reduce(
-    (count, item) => (count += 1),
-    0
-  );
+  const languagesCount = !country.languages
+    ? 0
+    : Object.keys(country.languages).reduce((count, item) => (count += 1), 0);
   const languageClassName =
     languagesCount > 1 ? "grid-language-container" : "flex-language-container";
 
@@ -52,7 +51,8 @@ function Country({ countryName }) {
       <div>
         <h1 className="country-name">{country.name.common}</h1>
         <p className="official-name">{country.name.official}</p>
-        <p>Region: {country.subregion}</p>
+        <p>Continent: {country.region}</p>
+        <p>Subregion: {!country.subregion ? "none" : country.subregion}</p>
         <p>Capital: {capital.join(", ")}</p>
         <p>Area: {country.area.toLocaleString()}</p>
         <p>Population: {country.population.toLocaleString()}</p>
@@ -61,9 +61,13 @@ function Country({ countryName }) {
       <div>
         <h2>Languages</h2>
         <ul className={languageClassName}>
-          {Object.keys(country.languages).map((item) => {
-            return <li key={item}>{country.languages[item]}</li>;
-          })}
+          {!country.languages ? (
+            <li>none</li>
+          ) : (
+            Object.keys(country.languages).map((item) => {
+              return <li key={item}>{country.languages[item]}</li>;
+            })
+          )}
         </ul>
       </div>
 

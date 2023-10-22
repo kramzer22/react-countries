@@ -6,6 +6,12 @@ function CountryList({
   searchRef,
   serachResultRef,
 }) {
+  const filteredCountries = (filter) => {
+    return countryList.filter((country) =>
+      country.name.common.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
   const continentList = countryList.reduce((itemList, country) => {
     const continent = country.region.toLowerCase();
     const subRegionName = !country.subregion ? "others" : country.subregion;

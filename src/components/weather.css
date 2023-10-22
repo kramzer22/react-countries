@@ -3,6 +3,10 @@
   margin-bottom: 20px;
 }
 
+.weather-container h2 {
+  text-align: center;
+}
+
 .time-now {
   font-size: 12px;
 }
