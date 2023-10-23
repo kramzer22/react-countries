@@ -1,4 +1,4 @@
-.search-container {
+.header-container {
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -75,4 +75,14 @@
 
 .search-item img {
   width: 15%;
+}
+
+.menu-container {
+  margin-left: 4px;
+  width: 40px;
+  height: 100%;
+}
+
+.menu-img {
+  color: #969699;
 }

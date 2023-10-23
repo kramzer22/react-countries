@@ -1,11 +1,6 @@
 import "./countryList.css";
 
-function CountryList({
-  countryList,
-  setCountryState,
-  searchRef,
-  serachResultRef,
-}) {
+function CountryList({ countryList, setCountry, searchRef, serachResultRef }) {
   const filteredCountries = (filter) => {
     return countryList.filter((country) =>
       country.name.common.toLowerCase().includes(filter.toLowerCase())
@@ -44,9 +39,9 @@ function CountryList({
     if (results.length !== 0) {
       serachResultRef.current.style.display = "none";
       searchRef.current.value = results[0].name.common;
-      setCountryState(results[0].name.common);
+      setCountry(results[0].name.common);
     } else {
-      setCountryState("");
+      setCountry("");
     }
   };
 

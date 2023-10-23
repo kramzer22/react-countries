@@ -51,7 +51,7 @@ function Country({ countryName }) {
       <div>
         <h1 className="country-name">{country.name.common}</h1>
         <p className="official-name">{country.name.official}</p>
-        <p>Continent: {country.region}</p>
+        <p>Region: {country.region}</p>
         <p>Subregion: {!country.subregion ? "none" : country.subregion}</p>
         <p>Capital: {capital.join(", ")}</p>
         <p>Area: {country.area.toLocaleString()}</p>

@@ -1,10 +1,12 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import "./components/loading.css";
 
-import Search from "./components/Search";
+import Header from "./components/Header";
 import Country from "./components/Country";
 import CountryList from "./components/CountryList";
+
+import * as countriesServices from "./services/countries";
 
 function App() {
   const [countries, setCountries] = useState(null);
@@ -12,6 +14,19 @@ function App() {
 
   const searchRef = useRef(null);
   const serachResultRef = useRef(null);
+
+  const getAllCountries = async () => {
+    try {
+      const response = await countriesServices.getAll();
+      setCountries(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllCountries();
+  }, []);
 
   let display;
   if (country !== "") {
@@ -28,7 +43,7 @@ function App() {
       display = (
         <CountryList
           countryList={countries}
-          setCountryState={setCountry}
+          setCountry={setCountry}
           searchRef={searchRef}
           serachResultRef={serachResultRef}
         />
@@ -38,13 +53,13 @@ function App() {
 
   return (
     <div className="app-container">
-      <Search
-        setCountryState={setCountry}
+      <Header
         countries={countries}
-        setCountries={setCountries}
+        setCountry={setCountry}
         searchRef={searchRef}
         serachResultRef={serachResultRef}
       />
+
       {display}
 
       <div className="copyrights-container">
